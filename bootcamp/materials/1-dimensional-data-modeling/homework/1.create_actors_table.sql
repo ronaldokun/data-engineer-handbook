@@ -7,20 +7,19 @@ CREATE TYPE films_struct AS (
 );
 
 -- Define the ENUM type for quality_class
-CREATE TYPE quality_class AS ENUM ('star', 'good', 'average', 'bad');
+CREATE TYPE quality_rating AS ENUM ('star', 'good', 'average', 'bad');
 
 drop table actors
-
 
 -- Create the actors table
 CREATE TABLE actors (
     actorid TEXT,                      -- Unique identifier for each actor
     actor TEXT NOT NULL,               -- Name of the actor
     films films_struct[],              -- Array of films using the composite type
---    quality_class quality_class,
-    is_active BOOL,
-    current_year INT,	
-	primary key(actorid, current_year)    
+    quality_class quality_rating,      -- Quality classification
+    is_active BOOLEAN,                 -- Whether the actor is active
+    current_year INT,                  -- Year of the data
+    PRIMARY KEY (actorid, current_year)
 );
 
 -- script to insert yearly data iteratively
@@ -76,26 +75,46 @@ this_year AS (
        actorid,
        actor,
        1970 AS current_year,
-       ARRAY_AGG(ROW(film, votes, rating, filmid)::films_struct) AS films
+       coalesce(
+           ARRAY_AGG(
+               ROW(film, votes, rating, filmid)::films_struct
+           ) filter (where film is not null), 
+           array[]::films_struct[]
+       ) as films,
+               
+       CASE
+            WHEN AVG(rating) > 8 THEN 'star'
+            WHEN AVG(rating) > 7 THEN 'good'
+            WHEN AVG(rating) > 6 THEN 'average'
+            ELSE 'bad'
+       end::quality_rating AS quality_class, -- Explicit cast to quality_rating enum
+       CASE
+            WHEN COUNT(film) > 0 THEN TRUE
+            ELSE FALSE
+       END AS is_active -- Actor is active if they have films this year
    FROM actor_films
    WHERE year = 1970
-   GROUP BY actorid, actor
+   GROUP BY actorid, actor -- Ensure grouping by non-aggregated columns
 )
-INSERT INTO actors (actorid, actor, films, current_year)
-SELECT 
-    COALESCE(ty.actorid, ly.actorid) AS actorid,
-    COALESCE(ty.actor, ly.actor) AS actor,
-    COALESCE(ly.films, ARRAY[]::films_struct[]) || 
-    COALESCE(ty.films, ARRAY[]::films_struct[]) AS films,
-    COALESCE(ty.current_year, ly.current_year + 1) AS current_year,
-    CASE WHEN ty.current_year is not null THEN true
-		 ELSE false
-	END AS is_active
-FROM last_year ly
-FULL OUTER JOIN this_year ty
-    ON ly.actorid = ty.actorid;
+INSERT INTO actors (actorid, actor, films, quality_class, is_active, current_year)
+
+--SELECT actorid, actor, films, quality_class, is_active, current_year
+--FROM this_year ty
+--where is_active = false;
+--SELECT 
+--    COALESCE(ty.actorid, ly.actorid) AS actorid,
+--    COALESCE(ty.actor, ly.actor) AS actor,
+--    COALESCE(ly.films, ARRAY[]::films_struct[]) || 
+--    COALESCE(ty.films, ARRAY[]::films_struct[]) AS films,
+--    quality_class,
+--    is_active,
+--    COALESCE(ty.current_year, ly.current_year + 1) AS current_year
+--FROM last_year ly
+--FULL OUTER JOIN this_year ty
+--    ON ly.actorid = ty.actorid;
    
-   
+ select * from actor_films af 
+ where af."year" = 1970
 
 
 
