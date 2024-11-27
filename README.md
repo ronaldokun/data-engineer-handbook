@@ -31,7 +31,7 @@ Top 3 must read books are:
 ### Great [list of over 10 communities to join](communities.md):
 
 Top must-join communities for DE:
-- [EcZachly Data Engineering Discord](https://discord.gg/JGumAXncAK)
+- [DataExpert.io Community Discord](https://discord.gg/JGumAXncAK)
 - [Data Talks Club Slack](https://datatalks.club/slack)
 - [Data Engineer Things Community](https://www.dataengineerthings.org/aboutus/)
 
@@ -183,6 +183,7 @@ Here's the mostly comprehensive list of data engineering creators:
 | Lenny            |                                                                                                                           | [Lenny A](https://www.linkedin.com/in/lennyardiles/) (6k+)                                                                    |                                                                                                                                                                                 |                                                                                                               |                                                                                                                                                                                                     |
 | Mehdi Ouazza | [Mehdio DataTV](https://www.youtube.com/@mehdio) (3k+)                                                               | [Mehdi Ouazza](https://www.linkedin.com/in/mehd-io/) (20k+)                                                                       | [mehd_io](https://x.com/mehd_io)                                                                                                                             |                                                  | [@mehdio_datatv](https://www.tiktok.com/@mehdio_datatv)                                                                                                                                                 |
 | ITVersity           | [ITVersity](https://www.youtube.com/@itversity) (67k+)                                                        | [Durga Gadiraju](https://www.linkedin.com/in/durga0gadiraju/) (48k+)                                                               |                                                                                                                                                                                 |                                                                                                               |                                                                  
+| Arnaud Milleker      |                                                                                                                           | [Arnaud Milleker](https://www.linkedin.com/in/arnaudmilleker/) (7k+)                                                      |                                                                                                                                                                                 |                                                                                                               |                                                                                                                                                                                                     |
 
 ### Great Podcasts
 
