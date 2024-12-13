@@ -64,7 +64,7 @@ distinct_matches_df = killing_spree_df.select("mapid", "match_id", "count").dist
 
 # Aggregate to find the sum of "count" per map
 killing_spree_by_map = distinct_matches_df.groupBy("mapid") \
-    .agg(sum("count").alias("total_killing_spree_medals"))
+    .agg(sum("bucketed_medals_matches_players.count").alias("total_killing_spree_medals"))
 
 # Join with maps_df to get map names
 killing_spree_with_names = killing_spree_by_map.join(
@@ -74,4 +74,3 @@ killing_spree_with_names = killing_spree_by_map.join(
 
 # Show the map with the most Killing Spree medals
 killing_spree_with_names.show(1)
-

@@ -1,6 +1,6 @@
 from pathlib import Path
 from pyspark.sql import SparkSession
-from pyspark.sql.functions import col, avg, desc
+from pyspark.sql.functions import col, avg, desc, coalesce
 
 spark = (SparkSession.builder
          .appName("HomeWork3")
@@ -52,8 +52,11 @@ joined_df = bucketed_match_details.join(
     bucketed_medals_matches_players, "match_id", "inner"
 )
 
+# Ensure player_total_kills is numeric and replace nulls with 0
+cleaned_df = joined_df.withColumn("player_total_kills", coalesce(col("player_total_kills"), col("player_total_kills").cast("int")).alias("player_total_kills"))
+
 # Aggregate to calculate the average kills per game for each player
-player_avg_kills_df = joined_df.groupBy("bucketed_match_details.player_gamertag") \
+player_avg_kills_df = cleaned_df.groupBy("bucketed_match_details.player_gamertag") \
     .agg(avg(col("player_total_kills")).alias("avg_kills_per_game")) \
     .orderBy(desc("avg_kills_per_game"))
 
@@ -61,5 +64,6 @@ player_avg_kills_df = joined_df.groupBy("bucketed_match_details.player_gamertag"
 top_player = player_avg_kills_df.first()
 
 print(f"Player with the most average kills per game: {top_player['player_gamertag']} ({top_player['avg_kills_per_game']} kills/game)")
+
 
 # Player with the most average kills per game: gimpinator14 (109.0 kills/game)
