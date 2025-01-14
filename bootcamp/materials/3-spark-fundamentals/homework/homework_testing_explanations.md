@@ -87,4 +87,4 @@ FROM (
 7. **Struct and Array Types**:
    - PostgreSQL arrays are replaced by Spark SQL's `ARRAY` type with `STRUCT` for nested data.
 
-This translation assumes the use of Delta Lake for transactional capabilities in Spark SQL. If you need more details or additional transformations, let me know!
+This translation assumes the use of Delta Lake for transactional capabilities in Spark SQL. 
