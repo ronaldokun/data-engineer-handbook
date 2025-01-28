@@ -26,6 +26,8 @@ services:
       - |
         FLINK_PROPERTIES=
         jobmanager.rpc.address: jobmanager
+    networks: # we add the network to the manager
+      - postgres_network
 
   # Flink task manager
   taskmanager:
@@ -52,3 +54,8 @@ services:
         jobmanager.rpc.address: jobmanager
         taskmanager.numberOfTaskSlots: 15
         parallelism.default: 3
+    networks:
+      - postgres_network ## we add the network to the taskmanager
+networks: ## we add the network to the docker compose
+  postgres_network:
+    external: true
