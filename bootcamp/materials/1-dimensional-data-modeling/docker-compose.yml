@@ -16,6 +16,8 @@ services:
       - ./data.dump:/docker-entrypoint-initdb.d/data.dump
       - ./scripts/init-db.sh:/docker-entrypoint-initdb.d/init-db.sh
       - postgres-data:/var/lib/postgresql/data
+    networks: ## we add the network to the postgres service
+      - postgres_network
   pgadmin:
     image: dpage/pgadmin4
     restart: on-failure
@@ -27,6 +29,11 @@ services:
       - "${PGADMIN_PORT}:80"
     volumes:
       - pgadmin-data:/var/lib/pgadmin
+    networks:
+      - postgres_network ## we add the network to the pgadmin service
+networks: ## we add the network to the docker compose so that is available to other containers
+  postgres_network:
+    name: postgres_network
 volumes:
   postgres-data:
   pgadmin-data:
