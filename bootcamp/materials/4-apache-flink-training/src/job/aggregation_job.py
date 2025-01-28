@@ -48,7 +48,7 @@ def create_aggregated_events_referrer_sink_postgres(t_env):
 def create_processed_events_source_kafka(t_env):
     kafka_key = os.environ.get("KAFKA_WEB_TRAFFIC_KEY", "")
     kafka_secret = os.environ.get("KAFKA_WEB_TRAFFIC_SECRET", "")
-    table_name = "process_events_kafka"
+    table_name = "events"
     pattern = "yyyy-MM-dd''T''HH:mm:ss.SSS''Z''"
     sink_ddl = f"""
         CREATE TABLE {table_name} (
